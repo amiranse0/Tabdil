@@ -34,5 +34,12 @@ data class Market(
     val usdtVolume: String,
 
     @SN("volume")
-    val volume: String
+    val volume: String,
+
+    @SN("first_currency")
+    val firstCurrency: FirstCurrency,
+
+    @SN("second_currency")
+    val secondCurrency: SecondCurrency
+
 )
