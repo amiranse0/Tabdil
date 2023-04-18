@@ -1,5 +1,6 @@
 package com.example.tabdil.data
 
+import android.util.Log
 import androidx.room.withTransaction
 import com.example.tabdil.data.db.TabdilDatabase
 import com.example.tabdil.data.model.local.LocalCurrency
@@ -24,6 +25,7 @@ class LocalDataSource @Inject constructor(
 
     suspend fun updateCurrencies(remoteCurrencies: List<Currency>) {
         database.withTransaction {
+            database.currencyDao().deleteCurrencies()
             val pinnedIds: List<Int> = database.currencyDao().getPinnedIds()
             val favoriteIds: List<Int> = database.currencyDao().getFavoriteIds()
 

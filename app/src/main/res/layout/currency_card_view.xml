@@ -30,6 +30,7 @@
                 android:layout_margin="5dp"
                 android:padding="1dp"
                 android:text='@{currency.name}'
+                android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@+id/pin_icon"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +41,7 @@
                 android:layout_margin="5dp"
                 android:padding="1dp"
                 android:text='@{currency.persianName}'
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/favorite_icon" />
 
@@ -47,31 +49,33 @@
                 android:id="@+id/price_currency_tether_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginLeft="110dp"
+                android:layout_marginTop="5dp"
                 android:padding="1dp"
                 android:text='@{currency.priceInTether + "$"}'
-                app:layout_constraintEnd_toStartOf="@+id/name_currency_tv"
-                app:layout_constraintStart_toEndOf="@+id/price_change_cv"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/secondary_price_currency_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginLeft="110dp"
+                android:layout_marginBottom="5dp"
                 android:padding="1dp"
                 android:text='@{currency.secondaryPrice + currency.secondarySymbolPrice}'
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/persian_name_currency_tv"
-                app:layout_constraintStart_toEndOf="@+id/price_change_cv" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="12sp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/price_change_cv"
-                android:layout_width="wrap_content"
+                changePrice='@{currency.changePercent}'
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="1dp"
-                changePrice='@{currency.changePercent}'
                 app:cardCornerRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,10 +85,13 @@
                     android:id="@+id/price_change_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:maxLines="1"
                     android:padding="1dp"
                     android:text='@{currency.changePercent + "%"}'
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     tools:layout_editor_absoluteX="31dp"
                     tools:layout_editor_absoluteY="21dp" />
 
