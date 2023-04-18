@@ -27,7 +27,7 @@ class Repository @Inject constructor(
                 emit(ResultOf.LoadingFillLocal)
                 val currencies = localDataSource.getLocalCurrencies()
                 currencies.collect{
-                    emit(ResultOf.Success(currencies))
+                    emit(ResultOf.Success(it))
                 }
             }
             try {
@@ -37,7 +37,7 @@ class Repository @Inject constructor(
                 emit(ResultOf.LoadingFillLocal)
                 val currencies = localDataSource.getLocalCurrencies()
                 currencies.collect{
-                    emit(ResultOf.Success(currencies))
+                    emit(ResultOf.Success(it))
                 }
 
             }catch (e: Exception){
