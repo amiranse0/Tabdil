@@ -4,4 +4,6 @@
     <string name="name">نماد</string>
     <string name="price">قیمت</string>
     <string name="_24">24 ساعت</string>
+    <string name="no_internet">no internet</string>
+    <string name="disconnect">disconnect</string>
 </resources>

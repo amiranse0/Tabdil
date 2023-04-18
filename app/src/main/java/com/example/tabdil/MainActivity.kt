@@ -3,11 +3,14 @@ package com.example.tabdil
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.tabdil.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -21,10 +24,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.myToolbar)
+
+    }
+
+    private fun connectHandler(disconnectedView: MenuItem) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                App.isConnected().collect{
+                    disconnectedView.isVisible = !it
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu);
+        menuInflater.inflate(R.menu.menu, menu)
+
+
+        if (menu != null) {
+            val disconnectedView: MenuItem = menu.findItem(R.id.no_connection)
+            connectHandler(disconnectedView)
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -34,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "favorite", Toast.LENGTH_LONG).show()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

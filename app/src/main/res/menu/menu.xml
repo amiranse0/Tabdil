@@ -8,4 +8,10 @@
         android:title="@string/favorite"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/no_connection"
+        android:icon="@drawable/baseline_disconnect"
+        android:title="@string/disconnect"
+        app:showAsAction="always"/>
+
 </menu>
