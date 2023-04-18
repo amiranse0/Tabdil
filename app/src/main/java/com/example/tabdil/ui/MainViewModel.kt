@@ -3,7 +3,7 @@ package com.example.tabdil.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tabdil.data.Repository
-import com.example.tabdil.data.model.Currency
+import com.example.tabdil.data.model.remote.Currency
 import com.example.tabdil.util.ResultOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package com.example.tabdil.data.model
+package com.example.tabdil.data.model.remote
 
 import com.google.gson.annotations.SerializedName as SN
 

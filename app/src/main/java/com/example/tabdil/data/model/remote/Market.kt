@@ -1,4 +1,4 @@
-package com.example.tabdil.data.model
+package com.example.tabdil.data.model.remote
 
 import com.google.gson.annotations.SerializedName as SN
 
@@ -6,17 +6,11 @@ data class Market(
     @SN("change_percent")
     val changePercent: String,
 
-    @SN("high")
-    val high: String,
-
     @SN("id")
     val id: Int,
 
     @SN("last_trade_price")
     val lastTradePrice: String,
-
-    @SN("low")
-    val low: String,
 
     @SN("name_fa")
     val persianName: String,
@@ -30,16 +24,10 @@ data class Market(
     @SN("symbol")
     val symbol: String,
 
-    @SN("usdt_volume")
-    val usdtVolume: String,
-
-    @SN("volume")
-    val volume: String,
-
     @SN("first_currency")
-    val firstCurrency: FirstCurrency,
+    val firstCurrency: PariCurrency,
 
     @SN("second_currency")
-    val secondCurrency: SecondCurrency
+    val secondCurrency: PariCurrency
 
 )

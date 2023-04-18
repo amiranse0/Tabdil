@@ -1,6 +1,6 @@
 package com.example.tabdil.data.remoteservice
 
-import com.example.tabdil.data.model.Currency
+import com.example.tabdil.data.model.remote.Currency
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

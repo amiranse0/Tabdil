@@ -1,6 +1,6 @@
 package com.example.tabdil.data
 
-import com.example.tabdil.data.model.Currency
+import com.example.tabdil.data.model.remote.Currency
 import com.example.tabdil.data.remoteservice.TabdilService
 import javax.inject.Inject
 
