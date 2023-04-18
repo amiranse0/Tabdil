@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Tabdil</string>
+    <string name="favorite">favorite</string>
+    <string name="name">نماد</string>
+    <string name="price">قیمت</string>
+    <string name="_24">24 ساعت</string>
 </resources>
