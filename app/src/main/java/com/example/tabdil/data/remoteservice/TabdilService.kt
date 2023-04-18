@@ -1,6 +1,6 @@
 package com.example.tabdil.data.remoteservice
 
-import com.example.tabdil.data.model.TokensItem
+import com.example.tabdil.data.model.Currency
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,7 +12,7 @@ interface TabdilService {
     @GET("r/plots/currency_prices/")
     suspend fun getCurrencies(
         @QueryMap query: Map<String, String>
-    ): List<TokensItem>
+    ): List<Currency>
 
     companion object {
         fun create(): TabdilService {

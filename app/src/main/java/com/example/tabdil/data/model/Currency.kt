@@ -2,7 +2,7 @@ package com.example.tabdil.data.model
 
 import com.google.gson.annotations.SerializedName as SN
 
-data class TokensItem(
+data class Currency(
     @SN("change_percent")
     val changePercent: String,
 
