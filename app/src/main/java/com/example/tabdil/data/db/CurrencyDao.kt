@@ -29,4 +29,7 @@ interface CurrencyDao {
 
     @Query("SELECT id FROM currency WHERE is_favorite == TRUE")
     suspend fun getFavoriteIds(): List<Int>
+
+    @Query("SELECT COUNT(*) FROM currency")
+    suspend fun getNumberOfRecords(): Int
 }
