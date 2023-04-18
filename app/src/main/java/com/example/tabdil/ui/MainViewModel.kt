@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
     val query: Map<String, String> = mapOf()
 
     private val _CurrencyStateFlow: MutableStateFlow<ResultOf<List<Currency>>> =
-        MutableStateFlow(ResultOf.Loading)
+        MutableStateFlow<ResultOf<List<Currency>>>(ResultOf.Loading)
     val currencyStateFlow = _CurrencyStateFlow
 
     fun getCurrencies(){
