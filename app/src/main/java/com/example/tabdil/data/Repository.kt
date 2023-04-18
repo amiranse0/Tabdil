@@ -21,9 +21,8 @@ class Repository @Inject constructor(
     }
     suspend fun getData(query: Map<String, String>)= flow {
         while (true){
-            if(localDataSource.isLocalEmpty()){
-                emit(ResultOf.LoadingEmptyLocal)
-            } else {
+            emit(ResultOf.LoadingEmptyLocal)
+            if(!localDataSource.isLocalEmpty()){
                 emit(ResultOf.LoadingFillLocal)
                 val currencies = localDataSource.getLocalCurrencies()
                 currencies.collect{

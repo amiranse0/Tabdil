@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
 
-
         if (menu != null) {
             val disconnectedView: MenuItem = menu.findItem(R.id.no_connection)
+            disconnectedView.isVisible = false
             connectHandler(disconnectedView)
         }
 

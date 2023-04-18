@@ -1,9 +1,6 @@
 package com.example.tabdil.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -14,12 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.tabdil.R
 import com.example.tabdil.data.model.local.LocalCurrency
 import com.example.tabdil.databinding.FragmentMainBinding
 import com.example.tabdil.util.ResultOf
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class MainFragment: Fragment(R.layout.fragment_main) {
@@ -37,6 +36,12 @@ class MainFragment: Fragment(R.layout.fragment_main) {
 
         initValues(view)
 
+        getData()
+
+        handelSwipeRefreshLayout()
+    }
+
+    private fun getData(){
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currencyStateFlow.collect{
@@ -57,6 +62,14 @@ class MainFragment: Fragment(R.layout.fragment_main) {
 
     fun putDataOnView(data:List<LocalCurrency>){
         mainAdapter.submitList(data)
+    }
+
+    private fun handelSwipeRefreshLayout(){
+        binding.root.setOnRefreshListener {
+            viewModel.getCurrencies()
+            getData()
+            binding.root.isRefreshing = false
+        }
     }
 
     private fun handleUiState(state: ResultOf<*>) {

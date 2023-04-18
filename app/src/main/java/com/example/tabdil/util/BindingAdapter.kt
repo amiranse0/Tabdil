@@ -5,10 +5,8 @@ import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import com.example.tabdil.R
 
-@SuppressLint("ResourceAsColor")
 @BindingAdapter("changePrice", requireAll = false)
 fun setBackgroundCardView(view: CardView, changePrice: Double){
-    var color: Int = R.color.red
-    if (changePrice > 0) color = R.color.green
-    view.setCardBackgroundColor(color)
+    if (changePrice >= 0) view.setCardBackgroundColor(view.context.getColor(R.color.green))
+    else view.setCardBackgroundColor(view.context.getColor(R.color.red))
 }
