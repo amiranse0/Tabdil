@@ -1,6 +1,6 @@
 package com.example.tabdil.di
 
-import com.example.tabdil.data.TabdilService
+import com.example.tabdil.data.remoteservice.TabdilService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

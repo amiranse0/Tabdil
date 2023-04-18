@@ -1,4 +1,4 @@
-package com.example.tabdil.data
+package com.example.tabdil.data.remoteservice
 
 import com.example.tabdil.data.model.TokensItem
 import okhttp3.OkHttpClient
