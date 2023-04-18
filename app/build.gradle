@@ -35,6 +35,7 @@ android {
 
     buildFeatures{
         viewBinding true
+        dataBinding true
     }
 }
 
@@ -69,5 +70,8 @@ dependencies {
     implementation "androidx.room:room-runtime:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"
     implementation "androidx.room:room-ktx:2.5.1"
+
+    //refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
 }
