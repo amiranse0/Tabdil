@@ -25,5 +25,8 @@ data class Currency(
     val usdtVolume: String,
 
     @SN("volume")
-    val volume: String
+    val volume: String,
+
+    @SN("markets")
+    val markets: List<Market>
 )

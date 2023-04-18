@@ -17,20 +17,20 @@ data class LocalCurrency(
     val persianName: String,
 
     @CI("price_in_tether")
-    val priceInTether: String,
+    val priceInTether: Double,
 
     @CI("secondary_price")
-    val secondaryPrice: String,
+    val secondaryPrice: Double,
 
     @CI("change_percent")
-    val changePercent: String,
+    val changePercent: Double,
 
     @CI("secondary_symbol_price")
     val secondarySymbolPrice: String,
 
     @CI("is_pin")
-    var isPin: Boolean = false,
+    var isPin: Boolean,
 
     @CI("is_favorite")
-    val isFavorite: Boolean = false
+    var isFavorite: Boolean
 )

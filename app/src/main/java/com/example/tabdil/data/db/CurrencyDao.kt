@@ -18,9 +18,15 @@ interface CurrencyDao {
     @Delete
     suspend fun deleteCurrency(vararg currency: LocalCurrency)
 
-    @Query("SELECT * FROM currency ORDER BY :is_pin")
-    fun getDCurrencies(): Flow<List<LocalCurrency>>
+    @Query("SELECT * FROM currency ORDER BY is_pin")
+    fun getCurrencies(): Flow<List<LocalCurrency>>
 
     @Update
     suspend fun updateCurrency(vararg currency: LocalCurrency)
+
+    @Query("SELECT id FROM currency WHERE is_pin == TRUE")
+    suspend fun getPinnedIds(): List<Int>
+
+    @Query("SELECT id FROM currency WHERE is_favorite == TRUE")
+    suspend fun getFavoriteIds(): List<Int>
 }
