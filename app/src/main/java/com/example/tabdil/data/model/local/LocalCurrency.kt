@@ -29,8 +29,8 @@ data class LocalCurrency(
     val secondarySymbolPrice: String,
 
     @CI("is_pin")
-    var isPin: Boolean,
+    var isPin: Boolean = false,
 
     @CI("is_favorite")
-    val isFavorite: Boolean
+    val isFavorite: Boolean = false
 )
