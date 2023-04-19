@@ -37,4 +37,7 @@ interface CurrencyDao {
 
     @Query("DELETE FROM currency")
     suspend fun deleteCurrencies()
+
+    @Query("SELECT name FROM currency WHERE is_favorite")
+    suspend fun getFavoritesName(): List<String>
 }

@@ -7,4 +7,6 @@
     <string name="no_internet">no internet</string>
     <string name="disconnect">disconnect</string>
     <string name="error_message">something is wrong.</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 </resources>

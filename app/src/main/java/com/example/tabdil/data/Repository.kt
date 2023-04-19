@@ -55,4 +55,6 @@ class Repository @Inject constructor(
     suspend fun favoriteUnfavoriteCurrency(currency: LocalCurrency) {
         localDataSource.favoriteUnfavoriteCurrency(currency)
     }
+
+    suspend fun getFavoritesName() = localDataSource.getFavoritesName()
 }

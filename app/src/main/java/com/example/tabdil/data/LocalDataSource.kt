@@ -39,4 +39,6 @@ class LocalDataSource @Inject constructor(
     fun getLocalCurrencies() = database.currencyDao().getCurrencies()
 
     suspend fun isLocalEmpty() = database.currencyDao().getNumberOfRecords() == 0
+
+    suspend fun getFavoritesName() = database.currencyDao().getFavoritesName()
 }

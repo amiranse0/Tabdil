@@ -6,6 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.tabdil.data.model.local.LocalCurrency
 import com.example.tabdil.databinding.ActivityMainBinding
 import com.example.tabdil.ui.CurrencyAdapter
+import com.example.tabdil.ui.FavoriteAdapter
 import com.example.tabdil.ui.MainViewModel
 import com.example.tabdil.ui.OnFavoriteClickListener
 import com.example.tabdil.ui.OnPinClickListener
@@ -28,6 +31,9 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     private val mainAdapter: CurrencyAdapter = CurrencyAdapter()
+    private val favoriteAdapter = FavoriteAdapter()
+    private lateinit var drawerLayout: DrawerLayout
+    lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +54,29 @@ class MainActivity : AppCompatActivity() {
         clickFavorite()
         clickPin()
 
+        handleFavorite()
     }
+
+    private fun getFavoritesName(){
+        viewModel.getFavoritesName()
+    }
+
+    private fun putFavoritesDataOnUi(){
+        viewModel.favoriteNamesLiveData.observe(this){
+            favoriteAdapter.submitList(it)
+        }
+    }
+
+    private fun handleFavorite(){
+        binding.listFavoritesCurrencies.adapter = favoriteAdapter
+        drawerLayout = binding.root
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
 
     private fun handelSwipeRefreshLayout(){
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -114,14 +142,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_favorite -> {
-                Toast.makeText(this, "favorite", Toast.LENGTH_LONG).show()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
+        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            getFavoritesName()
+            putFavoritesDataOnUi()
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
 }
