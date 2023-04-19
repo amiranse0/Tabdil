@@ -1,5 +1,6 @@
 package com.example.tabdil.data
 
+import com.example.tabdil.data.model.local.LocalCurrency
 import com.example.tabdil.data.model.remote.Currency
 import com.example.tabdil.util.ResultOf
 import kotlinx.coroutines.flow.flow
@@ -45,5 +46,13 @@ class Repository @Inject constructor(
             }
             kotlinx.coroutines.delay(TIME_STEP)
         }
+    }
+
+    suspend fun pinUnpinCurrency(currency: LocalCurrency) {
+        localDataSource.pinUnpinCurrency(currency)
+    }
+
+    suspend fun favoriteUnfavoriteCurrency(currency: LocalCurrency) {
+        localDataSource.favoriteUnfavoriteCurrency(currency)
     }
 }

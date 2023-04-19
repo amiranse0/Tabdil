@@ -103,6 +103,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="1dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:src='@{currency.isPin? @drawable/baseline_pin_24:@drawable/baseline_unpin_24}'
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -113,7 +115,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:padding="1dp"
-                android:src='@{currency.isPin? @drawable/baseline_favorite_24:@drawable/baseline_favorite_border_24}'
+                android:clickable="true"
+                android:focusable="true"
+                android:src='@{currency.isFavorite? @drawable/baseline_favorite_24:@drawable/baseline_favorite_border_24}'
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

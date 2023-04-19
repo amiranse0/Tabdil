@@ -12,15 +12,11 @@ class LocalDataSource @Inject constructor(
     private val database: TabdilDatabase
 ) {
     suspend fun pinUnpinCurrency(currency: LocalCurrency) {
-        val _currency = currency
-        _currency.isPin = false == currency.isPin
-        database.currencyDao().updateCurrency(_currency)
+        database.currencyDao().updateCurrency(currency)
     }
 
     suspend fun favoriteUnfavoriteCurrency(currency: LocalCurrency) {
-        val _currency = currency
-        _currency.isFavorite = false == currency.isFavorite
-        database.currencyDao().updateCurrency(_currency)
+        database.currencyDao().updateCurrency(currency)
     }
 
     suspend fun updateCurrencies(remoteCurrencies: List<Currency>) {

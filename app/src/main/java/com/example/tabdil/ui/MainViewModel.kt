@@ -32,4 +32,17 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateFavoriteOrUnfavorite(currency: LocalCurrency){
+        viewModelScope.launch {
+            repository.favoriteUnfavoriteCurrency(currency)
+        }
+    }
+
+    fun updatePinOrUnpin(currency: LocalCurrency){
+        viewModelScope.launch {
+            repository.pinUnpinCurrency(currency)
+        }
+    }
+
 }

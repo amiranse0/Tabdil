@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.tabdil.R
 import com.example.tabdil.data.model.local.LocalCurrency
 import com.example.tabdil.databinding.FragmentMainBinding
@@ -39,6 +38,9 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         getData()
 
         handelSwipeRefreshLayout()
+
+        clickFavorite()
+        clickPin()
     }
 
     private fun getData(){
@@ -70,6 +72,22 @@ class MainFragment: Fragment(R.layout.fragment_main) {
             getData()
             binding.root.isRefreshing = false
         }
+    }
+
+    private fun clickFavorite(){
+        mainAdapter.setFavoriteClickListener(object : OnFavoriteClickListener {
+            override fun onFavoriteClick(item: LocalCurrency) {
+                viewModel.updateFavoriteOrUnfavorite(item)
+            }
+        })
+    }
+
+    private fun clickPin(){
+        mainAdapter.setPinClickListener(object : OnPinClickListener {
+            override fun onPinClick(item: LocalCurrency) {
+                viewModel.updatePinOrUnpin(item)
+            }
+        })
     }
 
     private fun handleUiState(state: ResultOf<*>) {
@@ -106,6 +124,5 @@ class MainFragment: Fragment(R.layout.fragment_main) {
             }
         }
     }
-
 
 }
