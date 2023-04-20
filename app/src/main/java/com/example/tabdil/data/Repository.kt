@@ -3,6 +3,7 @@ package com.example.tabdil.data
 import com.example.tabdil.data.model.local.LocalCurrency
 import com.example.tabdil.data.model.remote.Currency
 import com.example.tabdil.util.ResultOf
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -15,35 +16,33 @@ class Repository @Inject constructor(
     companion object {
         val TIME_STEP = TimeUnit.MINUTES.toMillis(1)
     }
+
     private suspend fun fetch(query: Map<String, String>) = remoteDataSource.fetch(query)
 
     private suspend fun saveDataToLocal(data: List<Currency>) {
         localDataSource.updateCurrencies(data)
     }
-    suspend fun getData(query: Map<String, String>)= flow {
-        while (true){
-            emit(ResultOf.LoadingEmptyLocal)
-            if(!localDataSource.isLocalEmpty()){
-                emit(ResultOf.LoadingFillLocal)
-                val currencies = localDataSource.getLocalCurrencies()
-                currencies.collect{
-                    emit(ResultOf.Success(it))
-                }
-            }
-            try {
+
+    suspend fun getDataFromLocal() = flow{
+        val currencies = localDataSource.getLocalCurrencies()
+        currencies.collect {
+            emit(it)
+        }
+    }
+
+    suspend fun getData(query: Map<String, String>) = flow {
+        while (true) {
+            emit(ResultOf.Loading)
+            try{
                 val data = fetch(query)
                 saveDataToLocal(data)
-
-                emit(ResultOf.LoadingFillLocal)
-                val currencies = localDataSource.getLocalCurrencies()
-                currencies.collect{
+                getDataFromLocal().collect{
                     emit(ResultOf.Success(it))
                 }
-
-            }catch (e: Exception){
-                if (localDataSource.isLocalEmpty()) emit(ResultOf.ErrorEmptyLocal(e))
-                else emit(ResultOf.ErrorFillLocal(e))
+            }catch (e:Exception){
+                emit(ResultOf.Error(e))
             }
+
             kotlinx.coroutines.delay(TIME_STEP)
         }
     }

@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.getCurrencies()
+        viewModel.saveDataOnLocal()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.listCurrencies.adapter = mainAdapter
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.myToolbar)
 
+        getOfflineData()
         getData()
 
         handelSwipeRefreshLayout()
@@ -57,20 +58,29 @@ class MainActivity : AppCompatActivity() {
         handleFavorite()
     }
 
-    private fun getFavoritesName(){
+    private fun getFavoritesName() {
         viewModel.getFavoritesName()
     }
 
-    private fun putFavoritesDataOnUi(){
-        viewModel.favoriteNamesLiveData.observe(this){
+    private fun putFavoritesDataOnUi() {
+        viewModel.favoriteNamesLiveData.observe(this) {
             favoriteAdapter.submitList(it)
         }
     }
 
-    private fun handleFavorite(){
+    private fun getOfflineData() {
+        viewModel.getOfflineData()
+        viewModel.offlineLiveData.observe(this) {
+            putDataOnView(it)
+
+        }
+    }
+
+    private fun handleFavorite() {
         binding.listFavoritesCurrencies.adapter = favoriteAdapter
         drawerLayout = binding.root
-        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
+        actionBarDrawerToggle =
+            ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
@@ -78,19 +88,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun handelSwipeRefreshLayout(){
+    private fun handelSwipeRefreshLayout() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getCurrencies()
+            viewModel.saveDataOnLocal()
             getData()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
-    private fun getData(){
+    private fun getData() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.currencyStateFlow.collect{
-                    if (it is ResultOf.Success){
+                viewModel.currencyStateFlow.collect {
+                    handleUiState(it)
+                    if (it is ResultOf.Success) {
                         putDataOnView(it.data)
                     }
                 }
@@ -98,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun clickFavorite(){
+    private fun clickFavorite() {
         mainAdapter.setFavoriteClickListener(object : OnFavoriteClickListener {
             override fun onFavoriteClick(item: LocalCurrency) {
                 viewModel.updateFavoriteOrUnfavorite(item)
@@ -106,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun clickPin(){
+    private fun clickPin() {
         mainAdapter.setPinClickListener(object : OnPinClickListener {
             override fun onPinClick(item: LocalCurrency) {
                 viewModel.updatePinOrUnpin(item)
@@ -114,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun putDataOnView(data:List<LocalCurrency>){
+    fun putDataOnView(data: List<LocalCurrency>) {
         mainAdapter.submitList(data)
     }
 
@@ -122,7 +133,7 @@ class MainActivity : AppCompatActivity() {
     private fun connectHandler(disconnectedView: MenuItem) {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                App.isConnected().collect{
+                App.isConnected().collect {
                     disconnectedView.isVisible = !it
                 }
             }
@@ -149,45 +160,28 @@ class MainActivity : AppCompatActivity() {
         } else super.onOptionsItemSelected(item)
     }
 
-}
-
-
-
-/*
-private fun handleUiState(state: ResultOf<*>) {
-        val progressBar = activity?.findViewById<ProgressBar>(R.id.progress_bar)
-        val errorLayout = activity?.findViewById<TextView>(R.id.error_view)
-        val resultView = activity?.findViewById<ConstraintLayout>(R.id.result_view)
+    private fun handleUiState(state: ResultOf<*>) {
+        val progressBar = binding.progressBar
+        val resultView = binding.resultView
         when (state) {
-            is ResultOf.ErrorEmptyLocal -> {
-                errorLayout?.visibility = View.VISIBLE
-                progressBar?.visibility = View.INVISIBLE
-                resultView?.visibility = View.INVISIBLE
-                Toast.makeText(requireContext(), getString(R.string.error_message), Toast.LENGTH_SHORT).show()
-            }
-            is ResultOf.LoadingEmptyLocal -> {
-                errorLayout?.visibility = View.INVISIBLE
-                progressBar?.visibility = View.VISIBLE
-                resultView?.visibility = View.INVISIBLE
-            }
             is ResultOf.Success -> {
-                errorLayout?.visibility = View.INVISIBLE
-                progressBar?.visibility = View.INVISIBLE
-                resultView?.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
+                resultView.visibility = View.VISIBLE
             }
-            is ResultOf.LoadingFillLocal -> {
-                errorLayout?.visibility = View.INVISIBLE
-                progressBar?.visibility = View.VISIBLE
-                resultView?.visibility = View.VISIBLE
+
+            is ResultOf.Loading -> {
+                progressBar.visibility = View.VISIBLE
+                resultView.visibility = View.VISIBLE
             }
-            is ResultOf.ErrorFillLocal -> {
-                errorLayout?.visibility = View.INVISIBLE
-                progressBar?.visibility = View.INVISIBLE
-                resultView?.visibility = View.VISIBLE
-                Toast.makeText(requireContext(), getString(R.string.error_message), Toast.LENGTH_SHORT).show()
+
+            is ResultOf.Error -> {
+                progressBar.visibility = View.INVISIBLE
+                resultView.visibility = View.VISIBLE
+                Toast.makeText(this, getString(R.string.error_message), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+
 }
- */
+

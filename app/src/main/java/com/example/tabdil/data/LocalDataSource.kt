@@ -21,7 +21,6 @@ class LocalDataSource @Inject constructor(
 
     suspend fun updateCurrencies(remoteCurrencies: List<Currency>) {
         database.withTransaction {
-            database.currencyDao().deleteCurrencies()
             val pinnedIds: List<Int> = database.currencyDao().getPinnedIds()
             val favoriteIds: List<Int> = database.currencyDao().getFavoriteIds()
 

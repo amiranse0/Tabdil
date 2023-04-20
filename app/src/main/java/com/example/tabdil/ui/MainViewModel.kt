@@ -9,6 +9,8 @@ import com.example.tabdil.util.ResultOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,19 +22,28 @@ class MainViewModel @Inject constructor(
     val query: Map<String, String> = mapOf()
 
     private val _CurrencyStateFlow: MutableStateFlow<ResultOf<List<LocalCurrency>>> =
-        MutableStateFlow<ResultOf<List<LocalCurrency>>>(ResultOf.LoadingEmptyLocal)
+        MutableStateFlow<ResultOf<List<LocalCurrency>>>(ResultOf.Loading)
     val currencyStateFlow = _CurrencyStateFlow
 
     private val _FavoritesNameLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val favoriteNamesLiveData = _FavoritesNameLiveData
 
+    private val _offlineLiveData: MutableLiveData<List<LocalCurrency>> = MutableLiveData()
+    val offlineLiveData = _offlineLiveData
+
     private var job: Job? = null
-    fun getCurrencies() {
+    fun saveDataOnLocal() {
         job?.cancel()
         job = viewModelScope.launch {
             repository.getData(query).collect {
                 _CurrencyStateFlow.emit(it)
             }
+        }
+    }
+
+    fun getOfflineData(){
+        viewModelScope.launch {
+            _offlineLiveData.postValue(repository.getDataFromLocal().first())
         }
     }
 

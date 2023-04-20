@@ -8,7 +8,7 @@ import android.widget.Toast
 import kotlinx.coroutines.flow.MutableStateFlow
 
 fun haveNetwork(context: Context):MutableStateFlow<Boolean>{
-    val isConnectStateFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isConnectStateFlow: MutableStateFlow<Boolean> = MutableStateFlow(true)
 
     val networkRequest = NetworkRequest.Builder().build()
 
